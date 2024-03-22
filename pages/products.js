@@ -22,12 +22,12 @@ export default function Products() {
         <thead>
           <tr>
             <td>Product Name</td>
-            <td></td>
+            <td>Edit/Delete</td>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr>
+            <tr key={product._id}>
               <td>{product.title}</td>
               <td>
                 <Link href={"/products/edit/" + product._id}>

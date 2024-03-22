@@ -50,3 +50,15 @@ table.basic a {
 .btn-default {
   @apply bg-gray-500 text-white;
 }
+
+img {
+  max-height: 100%;
+}
+
+.imageContainerStyle {
+  @apply w-24 h-24 flex justify-center items-center overflow-hidden rounded-lg bg-gray-100;
+}
+
+.imageStyle {
+  @apply w-full h-full object-cover;
+}
