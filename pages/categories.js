@@ -49,10 +49,10 @@ function Categories({ swal }) {
       if (editedCategory) {
         data._id = editedCategory._id;
         await axios.put("/api/categories", data);
-        swal.fire("Success", "Category updated successfully.", "success");
+        // swal.fire("Success", "Category updated successfully.", "success");
       } else {
         await axios.post("/api/categories", data);
-        swal.fire("Success", "Category added successfully.", "success");
+        // swal.fire("Success", "Category added successfully.", "success");
       }
       setEditedCategory(null);
       setName("");

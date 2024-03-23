@@ -34,12 +34,16 @@ export default function ProductForm({
 
   async function saveProduct(ev) {
     ev.preventDefault();
+
+    // Check if category is not empty, if it is, set it to null
+    const categoryToSend = category ? category : null;
+
     const data = {
       title,
       description,
       price,
       images,
-      category,
+      category: categoryToSend,
       properties: productProperties,
     };
 
@@ -52,6 +56,7 @@ export default function ProductForm({
       await axios.post("/api/products", data);
       setGoToProducts(true);
     }
+    setGoToProducts(true);
   }
   if (goToProducts) {
     router.push("/products");
@@ -182,7 +187,7 @@ export default function ProductForm({
           </div>
         )}
 
-        <label className=" cursor-pointer w-24 h-24 flex flex-col text-sm gap-1 text-primary rounded-sm bg-white shadow-sm border border-gray-200 justify-center items-center">
+        <label className=" cursor-pointer w-24 h-24 flex flex-col text-sm gap-1 text-gray-500 rounded-sm bg-white shadow-sm border border-gray-200 justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
