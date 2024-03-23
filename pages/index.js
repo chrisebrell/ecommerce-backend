@@ -1,15 +1,12 @@
-import { useSession } from "next-auth/react";
 import Layout from "./components/layout";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();
 
-  if (!session) return null;
-
   const getFirstName = (fullName) => {
     return fullName?.split(" ")[0] || "";
   };
-
   return (
     <Layout>
       <div className="text-blue-900 items-center flex justify-between">
