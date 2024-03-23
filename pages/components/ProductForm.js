@@ -68,6 +68,12 @@ export default function ProductForm({
         onChange={(ev) => setTitle(ev.target.value)}
       />
 
+      <label>Category</label>
+      <select>
+        <option>Uncategorized</option>
+        <option>//</option>
+      </select>
+
       <label>Product Description</label>
       <textarea
         placeholder="description"

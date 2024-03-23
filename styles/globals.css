@@ -3,13 +3,15 @@
 @tailwind utilities;
 
 input,
-textarea {
+textarea,
+select {
   @apply border-2 rounded-md px-1 border-gray-200 w-full;
   @apply mb-2;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply border-blue-900;
 }
 
