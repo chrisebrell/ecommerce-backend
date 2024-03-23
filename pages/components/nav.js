@@ -1,12 +1,16 @@
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 export default function Nav() {
   const inactiveLink = "flex gap-1 p-1";
   const activeLink = inactiveLink + " rounded-l-lg text-blue-900 bg-white";
   const router = useRouter();
   const { pathname } = router;
+  async function logout() {
+    await signOut({ redirect: false, callbackUrl: "/" });
+  }
+
   return (
     <aside className="text-white p-4 pr-0">
       <Link className="flex gap-1 mb-4 mr-2" href={"/"}>
@@ -137,7 +141,7 @@ export default function Nav() {
           Settings
         </Link>
 
-        <button onClick={() => signOut()} className={inactiveLink}>
+        <button onClick={logout} className={inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -149,10 +153,10 @@ export default function Nav() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
             />
           </svg>
-          Sign Out
+          Logout
         </button>
       </nav>
     </aside>
