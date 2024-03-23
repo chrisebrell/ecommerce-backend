@@ -13,7 +13,7 @@ export default function Home() {
         <h2>
           Howdy, <b>{getFirstName(session?.user?.name)}</b>
         </h2>
-        <div className="flex bg-gray-300 rounded-lg text-black overflow-hidden items-center gap-0.15">
+        <div className="flex bg-highlight rounded-lg text-black overflow-hidden items-center gap-0.15">
           {/* <img src={session?.user?.image} alt="" className="w-6 h-6" /> */}
           <div className="w-6 h-6 flex justify-center items-center">
             <svg

@@ -167,7 +167,7 @@ export default function ProductForm({
         >
           {!!images?.length &&
             images.map((link, index) => (
-              <div key={link} className="imageContainerStyle">
+              <div key={link} className="imageContainerStyle p-1">
                 <img
                   className="w-full h-full object-cover rounded-lg"
                   src={link}
@@ -182,7 +182,7 @@ export default function ProductForm({
           </div>
         )}
 
-        <label className=" cursor-pointer w-24 h-24 flex flex-col text-sm gap-1 text-gray-500 rounded-lg bg-gray-200 justify-center items-center">
+        <label className=" cursor-pointer w-24 h-24 flex flex-col text-sm gap-1 text-primary rounded-sm bg-white shadow-sm border border-gray-200 justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
