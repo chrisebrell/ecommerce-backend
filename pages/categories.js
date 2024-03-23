@@ -9,6 +9,8 @@ function Categories({ swal }) {
   const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [properties, setProperties] = useState([]);
+  const [nextPropertyId, setNextPropertyId] = useState(1);
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -53,11 +55,11 @@ function Categories({ swal }) {
   function deleteCategory(category) {
     swal
       .fire({
-        title: "Are you sure?",
-        text: `Do you want to delete ${category.name}?`,
+        // title: "Are you sure?",
+        text: `Are you sure you want to delete ${category.name}?`,
         showCancelButton: true,
         cancelButtonText: "Cancel",
-        confirmButtonText: "Yes, Delete!",
+        confirmButtonText: "Yes",
         confirmButtonColor: "#d55",
         reverseButtons: true,
       })
@@ -69,11 +71,15 @@ function Categories({ swal }) {
         }
       });
   }
+
   function addProperty() {
-    setProperties((prev) => {
-      return [...prev, { name: "", values: "" }];
-    });
+    setProperties((prev) => [
+      ...prev,
+      { id: nextPropertyId, name: "", values: "" },
+    ]);
+    setNextPropertyId((prevId) => prevId + 1);
   }
+
   function handlePropertyNameChange(index, property, newName) {
     setProperties((prev) => {
       const properties = [...prev];
@@ -100,14 +106,14 @@ function Categories({ swal }) {
       <h1>Categories</h1>
       <label>
         {editedCategory
-          ? `Edit category ${editedCategory.name}`
-          : "Create new category"}
+          ? `Edit ${editedCategory.name} Category`
+          : "Create New Category"}
       </label>
       <form onSubmit={saveCategory}>
         <div className="flex gap-1">
           <input
             type="text"
-            placeholder={"Category name"}
+            placeholder={"Category Name"}
             onChange={(ev) => setName(ev.target.value)}
             value={name}
           />
@@ -115,7 +121,7 @@ function Categories({ swal }) {
             onChange={(ev) => setParentCategory(ev.target.value)}
             value={parentCategory}
           >
-            <option value="">No parent category</option>
+            <option value="">No Parent Category</option>
             {categories.length > 0 &&
               categories.map((category) => (
                 <option key={category._id} value={category._id}>
@@ -125,17 +131,19 @@ function Categories({ swal }) {
           </select>
         </div>
         <div className="mb-2">
-          <label className="block">Properties</label>
+          <label className="block">Product Properties</label>
           <button
             onClick={addProperty}
             type="button"
             className="btn-default text-sm mb-2"
           >
-            Add new property
+            Add New Property
           </button>
           {properties.length > 0 &&
             properties.map((property, index) => (
-              <div key={property.name} className="flex gap-1 mb-2">
+              <div key={property.id} className="flex gap-1 mb-2">
+                {" "}
+                {/* Use property.id as the key */}
                 <input
                   type="text"
                   value={property.name}
@@ -143,7 +151,7 @@ function Categories({ swal }) {
                   onChange={(ev) =>
                     handlePropertyNameChange(index, property, ev.target.value)
                   }
-                  placeholder="property name (example: color)"
+                  placeholder="Property (Ex: Color)"
                 />
                 <input
                   type="text"
@@ -152,7 +160,7 @@ function Categories({ swal }) {
                     handlePropertyValuesChange(index, property, ev.target.value)
                   }
                   value={property.values}
-                  placeholder="values, comma separated"
+                  placeholder="Values, Comma Separated"
                 />
                 <button
                   onClick={() => removeProperty(index)}
