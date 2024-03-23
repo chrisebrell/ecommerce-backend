@@ -11,11 +11,15 @@ export default function ProductForm({
   images: existingImages,
   price: existingPrice,
   category: assignedCategory,
+  properties: assignedProperties,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
   const [price, setPrice] = useState(existingPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
+  const [productProperties, setProductProperties] = useState(
+    assignedProperties || {}
+  );
   const [images, setImages] = useState(existingImages || []);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -30,7 +34,14 @@ export default function ProductForm({
 
   async function saveProduct(ev) {
     ev.preventDefault();
-    const data = { title, description, price, images, category };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties: productProperties,
+    };
 
     if (_id) {
       //update
@@ -46,6 +57,16 @@ export default function ProductForm({
     router.push("/products");
   }
 
+  //update state of prod props
+  function setProductProp(propName, value) {
+    setProductProperties((prev) => {
+      const newProductProps = { ...prev };
+      newProductProps[propName] = value;
+      return newProductProps;
+    });
+  }
+
+  //images uplaod function
   async function uploadImages(ev) {
     //upload
     const files = ev.target?.files;
@@ -67,6 +88,27 @@ export default function ProductForm({
     setImages(images);
   }
 
+  //assign all properties for parent and child categories, run while loop for all structure
+  const propertiesToFill = [];
+  if (categories.length > 0 && category) {
+    let catInfo = categories.find(({ _id }) => _id === category);
+    if (catInfo) {
+      propertiesToFill.push(...catInfo.properties);
+      while (catInfo?.parent?._id) {
+        const parentCat = categories.find(
+          ({ _id }) => _id === catInfo.parent._id
+        );
+        if (parentCat) {
+          propertiesToFill.push(...parentCat.properties);
+          catInfo = parentCat;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
+  //show on page
   return (
     <form onSubmit={saveProduct}>
       <label>Product Name</label>
@@ -77,7 +119,7 @@ export default function ProductForm({
         onChange={(ev) => setTitle(ev.target.value)}
       />
 
-      <label>Product Category</label>
+      <label>Category</label>
       <select value={category} onChange={(ev) => setCategory(ev.target.value)}>
         <option value="">Uncategorized</option>
         {categories.length > 0 &&
@@ -87,6 +129,26 @@ export default function ProductForm({
             </option>
           ))}
       </select>
+
+      {/* display properties */}
+      {propertiesToFill.length > 0 &&
+        propertiesToFill.map((p) => (
+          <div key={p.name} className="">
+            <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
+            <div>
+              <select
+                value={productProperties[p.name]}
+                onChange={(ev) => setProductProp(p.name, ev.target.value)}
+              >
+                {p.values.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        ))}
 
       <label>Product Description</label>
       <textarea
