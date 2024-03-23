@@ -19,28 +19,53 @@ function Categories({ swal }) {
       setCategories(result.data);
     });
   }
+
   async function saveCategory(ev) {
     ev.preventDefault();
+
+    const isAllPropertiesValid = properties.every(
+      (p) => p.name.trim() && p.values.trim()
+    );
+
+    if (!isAllPropertiesValid) {
+      swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "All properties must have a name and values.",
+      });
+      return;
+    }
+
     const data = {
       name,
       parentCategory,
       properties: properties.map((p) => ({
         name: p.name,
-        values: p.values.split(","),
+        values: p.values.split(",").map((value) => value.trim()),
       })),
     };
-    if (editedCategory) {
-      data._id = editedCategory._id;
-      await axios.put("/api/categories", data);
+
+    try {
+      if (editedCategory) {
+        data._id = editedCategory._id;
+        await axios.put("/api/categories", data);
+        swal.fire("Success", "Category updated successfully.", "success");
+      } else {
+        await axios.post("/api/categories", data);
+        swal.fire("Success", "Category added successfully.", "success");
+      }
       setEditedCategory(null);
-    } else {
-      await axios.post("/api/categories", data);
+      setName("");
+      setParentCategory("");
+      setProperties([]);
+      setNextPropertyId(1);
+      fetchCategories();
+    } catch (error) {
+      console.error("Save category error:", error);
+      swal.fire("Error", "There was a problem saving the category.", "error");
     }
-    setName("");
-    setParentCategory("");
-    setProperties([]);
-    fetchCategories();
   }
+
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
@@ -52,22 +77,39 @@ function Categories({ swal }) {
       }))
     );
   }
+
   function deleteCategory(category) {
     swal
       .fire({
-        // title: "Are you sure?",
-        text: `Are you sure you want to delete ${category.name}?`,
+        icon: "warning",
+        title: "Are you sure?",
+        text: `Are you sure you want to delete ${category.name}? This action cannot be undone.`,
         showCancelButton: true,
         cancelButtonText: "Cancel",
         confirmButtonText: "Yes",
-        confirmButtonColor: "#d55",
+        confirmButtonColor: "#d33",
         reverseButtons: true,
       })
       .then(async (result) => {
         if (result.isConfirmed) {
           const { _id } = category;
-          await axios.delete("/api/categories?_id=" + _id);
-          fetchCategories();
+          try {
+            await axios.delete(`/api/categories?_id=${_id}`);
+            swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: `${category.name} has been deleted.`,
+              confirmButtonColor: "#3085d6",
+            });
+            fetchCategories();
+          } catch (error) {
+            console.error("Delete category error:", error);
+            swal.fire(
+              "Error",
+              "There was a problem deleting the category.",
+              "error"
+            );
+          }
         }
       });
   }
