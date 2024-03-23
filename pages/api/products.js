@@ -2,10 +2,27 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "models/Product.js";
 import { isAdminRequest } from "./auth/[...nextauth]";
 
+const setCORSHeaders = (res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+};
+
 export default async function handle(req, res) {
   const { method } = req;
+
+  setCORSHeaders(res);
+
   await mongooseConnect();
-  await isAdminRequest(req, res);
+  // await isAdminRequest(req, res);
+
+  if (["PUT", "POST", "DELETE"].includes(method)) {
+    await isAdminRequest(req, res);
+  }
 
   if (method === "GET") {
     if (req.query?.id) {
