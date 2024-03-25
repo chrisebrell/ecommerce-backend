@@ -119,7 +119,7 @@ export default function ProductForm({
       <label>Product Name</label>
       <input
         type="text"
-        placeholder="product name"
+        placeholder="Product name"
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
       />
@@ -157,7 +157,7 @@ export default function ProductForm({
 
       <label>Product Description</label>
       <textarea
-        placeholder="description"
+        placeholder="Description"
         value={description}
         onChange={(ev) => setDescription(ev.target.value)}
       />
@@ -216,7 +216,7 @@ export default function ProductForm({
       <label>Product Price</label>
       <input
         type="number"
-        placeholder="price"
+        placeholder="Price"
         value={price}
         onChange={(ev) => setPrice(ev.target.value)}
       />
