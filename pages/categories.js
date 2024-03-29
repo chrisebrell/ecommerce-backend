@@ -95,12 +95,12 @@ function Categories({ swal }) {
           const { _id } = category;
           try {
             await axios.delete(`/api/categories?_id=${_id}`);
-            swal.fire({
-              icon: "success",
-              title: "Deleted!",
-              text: `${category.name} has been deleted.`,
-              confirmButtonColor: "#3085d6",
-            });
+            // swal.fire({
+            //   icon: "success",
+            //   title: "Deleted!",
+            //   text: `${category.name} has been deleted.`,
+            //   confirmButtonColor: "#3085d6",
+            // });
             fetchCategories();
           } catch (error) {
             console.error("Delete category error:", error);
@@ -117,7 +117,8 @@ function Categories({ swal }) {
   function addProperty() {
     setProperties((prev) => [
       ...prev,
-      { id: nextPropertyId, name: "", values: "" },
+      // Add 'N/A' as the initial value for the 'values' field
+      { id: nextPropertyId, name: "", values: "N/A" },
     ]);
     setNextPropertyId((prevId) => prevId + 1);
   }
@@ -129,13 +130,16 @@ function Categories({ swal }) {
       return properties;
     });
   }
+
   function handlePropertyValuesChange(index, property, newValues) {
     setProperties((prev) => {
       const properties = [...prev];
-      properties[index].values = newValues;
+      // If the new values are empty or just whitespace, keep it as "N/A".
+      properties[index].values = newValues.trim() ? newValues : "N/A";
       return properties;
     });
   }
+
   function removeProperty(indexToRemove) {
     setProperties((prev) => {
       return [...prev].filter((p, pIndex) => {

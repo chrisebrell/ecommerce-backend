@@ -4,6 +4,7 @@ import axios from "axios";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
+
   useEffect(() => {
     axios.get("/api/orders").then((response) => {
       setOrders(response.data);
@@ -13,28 +14,27 @@ export default function OrdersPage() {
     <Layout>
       <h1>Orders</h1>
       <table className="basic">
-        <thead>
-          <tr>
+        <thead className="">
+          <tr className="">
+            <th>Name & Email</th>
+            <th>Address</th>
+            <th>Product(s) Ordered</th>
             <th>Date</th>
-            <th>Paid</th>
-            <th>Recipient</th>
-            <th>Products</th>
           </tr>
         </thead>
         <tbody>
           {orders.length > 0 &&
             orders.map((order) => (
-              <tr key={order._id}>
-                <td>{new Date(order.createdAt).toLocaleString()}</td>
-                <td className={order.paid ? "text-green-600" : "text-red-600"}>
-                  {order.paid ? "YES" : "NO"}
+              <tr key={order._id} className="border-b border-gray-200">
+                <td>
+                  {order.name}
+                  <br />
+                  {order.email}
                 </td>
                 <td>
-                  {order.name} {order.email}
-                  <br />
-                  {order.city} {order.zip} {order.state}
-                  <br />
-                  {order.address}
+                  {order.address} <br />
+                  {order.city}, {order.state}
+                  {""} {order.zip}
                 </td>
                 <td>
                   {order.line_items.map((l) => (
@@ -44,6 +44,7 @@ export default function OrdersPage() {
                     </>
                   ))}
                 </td>
+                <td>{new Date(order.createdAt).toLocaleString()}</td>
               </tr>
             ))}
         </tbody>

@@ -33,12 +33,12 @@ function DeleteProductPage({ swal }) {
           .then(async (result) => {
             if (result.isConfirmed) {
               await axios.delete("/api/products?id=" + id);
-              await swal.fire({
-                icon: "success",
-                title: "Deleted!",
-                text: `${response.data.title} has been deleted.`,
-                confirmButtonColor: "#3085d6",
-              });
+              // await swal.fire({
+              //   icon: "success",
+              //   title: "Deleted!",
+              //   text: `${response.data.title} has been deleted.`,
+              //   confirmButtonColor: "#3085d6",
+              // });
               router.push("/products");
             } else if (result.dismiss === swal.DismissReason.cancel) {
               router.push("/products");
