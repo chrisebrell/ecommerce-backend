@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link className="flex gap-1" href={"/"}>
+    <div className="flex gap-1" href={""}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -18,6 +18,6 @@ export default function Logo() {
         />
       </svg>
       <span className="">Admin Panel</span>
-    </Link>
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Layout from "./components/layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Home from "pages";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ export default function Products() {
   }, []);
   return (
     <Layout>
+      <Home />
       <Link className="btn-primary" href={"/products/new"}>
         Add New Product
       </Link>

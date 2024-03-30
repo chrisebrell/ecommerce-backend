@@ -1,6 +1,7 @@
 import Layout from "./components/layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Home from "pages";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,7 @@ export default function OrdersPage() {
   }, []);
   return (
     <Layout>
+      <Home />
       <h1>Orders</h1>
       <table className="basic">
         <thead className="">

@@ -3,6 +3,7 @@ import Layout from "./components/layout";
 import axios from "axios";
 import { Settings } from "models/Setting";
 import { withSwal } from "react-sweetalert2";
+import Home from "pages";
 
 function SettingsPage({ swal }) {
   const [products, setProducts] = useState([]);
@@ -38,6 +39,7 @@ function SettingsPage({ swal }) {
 
   return (
     <Layout>
+      <Home />
       <h1>Settings</h1>
 
       {!productsLoading && !featuredLoading && (
